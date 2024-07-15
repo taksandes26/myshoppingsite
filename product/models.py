@@ -48,3 +48,12 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('products:product_detail', args=[self.id, self.slug])
+
+
+class ProductRecommendation(models.Model):
+    product = models.ForeignKey(Product, related_name='recommendations', on_delete=models.CASCADE)
+    recommended_product = models.ForeignKey(Product, related_name='recommended_by', on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('product', 'recommended_product')
