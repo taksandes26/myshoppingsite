@@ -20,13 +20,19 @@ class Cart:
         if product_id not in self.cart:
             self.cart[product_id] = {
                 'quantity': 0,
-                'price': str(product.pice)
+                'price': str(product.price)
             }
         if override_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
         self.save()
+
+    def save(self):
+        """
+        Save the cart state to the session.
+        """
+        self.session.modified = True
 
     def get_cart_items(self):
         """
@@ -62,3 +68,10 @@ class Cart:
             quantity = item['quantity']
             total_price += price * quantity
         return total_price
+
+    def clear_cart(self):
+        """
+        Clear the cart entirely.
+        """
+        del self.session[settings.CART_SESSION_ID]
+        self.save()
