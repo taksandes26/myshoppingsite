@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'product',
     'cart',
     'orders',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processor.cart',
             ],
         },
     },
@@ -124,3 +126,9 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CART_SESSION_ID = "cart"
+
+STRIPE_PUBLISHABLE_KEY = ("pk_test_51Pdc4bSDQqy7LLVWdRe2zdk9o4pI6fTTo597VAdWXgv5zWhiyTUZdWDyG0qYTZyntRxhmKxtMwUnk4AX"
+                          "bieNejyM009HQDCclJ")
+STRIPE_SECRET_KEY = ("sk_test_51Pdc4bSDQqy7LLVWChJDAI8Jrar8HpIkvyA2uoTkDMyeECCPMiODMgNYsOvYjxF0LF7rdb5VXn3k22innu1cAfF"
+                     "P00afgewZpM")
+STRIPE_API_VERSION = "2024-06-20"
