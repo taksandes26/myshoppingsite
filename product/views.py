@@ -43,8 +43,10 @@ def product_detail(request, product_id, slug):
     r = Recommender()
     recommended_products = r.suggest_products_for([product], 4)
 
-    context = {'product': product, "cart_product_form": cart_product_form, key: recently_viewed_products, 'recommended_products': recommended_products}
+    context = {'product': product, "cart_product_form": cart_product_form, key: recently_viewed_products,
+               'recommended_products': recommended_products}
     return render(request, 'products/detail.html', context=context)
+
 
 def load_products(request):
     url = "https://fakestoreapi.com/products"

@@ -1,7 +1,7 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
 from django.contrib.auth import views as auth_views, authenticate, login, logout
 from django.views.generic import View
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, AddressForm
 from django.contrib import messages
 from .models import Profile
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,16 +10,16 @@ from django.contrib.auth.decorators import login_required
 
 
 class SignUpView(View):
-    from_class = SignUpForm
+    form_class = SignUpForm
     initial_template = 'registration/register.html'
     template_name = 'registration/registration_done.html'
 
     def get(self, request):
-        user_form = self.from_class()
+        user_form = self.form_class()
         return render(request, self.initial_template, {'user_form': user_form})
 
     def post(self, request):
-        form = self.from_class(request.POST)
+        form = self.form_class(request.POST)
         if form.is_valid():
             new_user = form.save(commit=False)  # created new_user object avoid saving it yet
             password = form.cleaned_data.get('password1')  # set the chosen password
@@ -78,3 +78,21 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return render(self.request, self.template_name)
+
+
+class Add_Address_View(View):
+    form_class = AddressForm
+
+    def get(self, request):
+        form = self.form_class
+        return render(request, context={'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            return redirect()
+
+

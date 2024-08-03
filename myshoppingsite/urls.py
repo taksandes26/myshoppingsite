@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('cart/', include('cart.urls')),
     path('orders/', include('orders.urls')),
     path('payment/', include('payment.urls')),
+    path('drf-api/', include('accounts.drf_class_api.urls', namespace='drf_class_api')),
     path('', include('product.urls')),
 
 

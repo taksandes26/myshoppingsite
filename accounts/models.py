@@ -18,4 +18,4 @@ class Address(models.Model):
     pincode = models.CharField(max_length=6)
 
     def __str__(self):
-        return self.type
+        return f"{self.type, self.city, self.country, self.pincode}"
