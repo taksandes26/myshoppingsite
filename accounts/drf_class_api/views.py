@@ -43,19 +43,16 @@ class ProfileCreateApiView(APIView):
         if not user_id:
             message = {'error': "user_id required"}
             return Response(message, status=HTTP_400_BAD_REQUEST)
+
         # checks if a user with the given user_id exists in the database.
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            message = {'error': "No such user exist"}
-            return Response(message, status=HTTP_400_BAD_REQUEST)
+        user = get_object_or_404(User, id=user_id)
 
         # checks if a profile already exists for the retrieved user
         if Profile.objects.filter(user=user).exists():
             message = {'error': "Profile already exist"}
             return Response(message, status=HTTP_400_BAD_REQUEST)
 
-            # update the provided user details
+        # update the provided user details
         user.first_name = first_name
         user.last_name = last_name
         user.email = email
@@ -79,17 +76,12 @@ class ProfileUpdateApiView(APIView):
         if not user_id:
             message = {'error': "valid user_id required"}
             return Response(message, status=HTTP_400_BAD_REQUEST)
+
         # checks if user id is present in database
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            message = {'error': "User does not exist"}
-            return Response(message, status=HTTP_400_BAD_REQUEST)
-        try:
-            profile = Profile.objects.get(user=user)
-        except Profile.DoesNotExist:
-            message = {'error': f"profile does not exist for user_id {user_id}"}
-            return Response(message, status=HTTP_400_BAD_REQUEST)
+        user = get_object_or_404(User, id=user_id)
+
+        profile = get_object_or_404(Profile, user=user)
+
         #  so if the profile exist with provided user id then update given fields
 
         if first_name:
@@ -114,16 +106,10 @@ class ProfileDeleteApiView(APIView):
         if not user_id:
             message = {'error': "valid user_id required"}
             return Response(message, status=HTTP_400_BAD_REQUEST)
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            message = {'error': "user does not exist"}
-            return Response(message, status=HTTP_400_BAD_REQUEST)
-        try:
-            profile = Profile.objects.get(user=user)
-        except Profile.DoesNotExist:
-            message = {'error': "Profile does not exist"}
-            return Response(message, status=HTTP_400_BAD_REQUEST)
+
+        user = get_object_or_404(User, id=user_id)
+
+        profile = get_object_or_404(Profile, user=user)
 
         profile.delete()
         response = {'message': "Profile deleted successfully", 'status': "success"}
